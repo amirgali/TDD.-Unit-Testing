@@ -99,13 +99,10 @@
 		98374CFF274AC63200DDEB20 /* ToDoApp */ = {
 			isa = PBXGroup;
 			children = (
-				98374D00274AC63200DDEB20 /* AppDelegate.swift */,
-				98374D02274AC63200DDEB20 /* SceneDelegate.swift */,
-				98374D04274AC63200DDEB20 /* ViewController.swift */,
-				98374D06274AC63200DDEB20 /* Main.storyboard */,
-				98374D09274AC63400DDEB20 /* Assets.xcassets */,
-				98374D0B274AC63400DDEB20 /* LaunchScreen.storyboard */,
-				98374D0E274AC63400DDEB20 /* Info.plist */,
+				98374D32274AC65E00DDEB20 /* Controller */,
+				98374D31274AC65800DDEB20 /* View */,
+				98374D30274AC65100DDEB20 /* Model */,
+				98374D33274AC67D00DDEB20 /* Supporting files */,
 			);
 			path = ToDoApp;
 			sourceTree = "<group>";
@@ -125,6 +122,41 @@
 				98374D23274AC63400DDEB20 /* ToDoAppUITestsLaunchTests.swift */,
 			);
 			path = ToDoAppUITests;
+			sourceTree = "<group>";
+		};
+		98374D30274AC65100DDEB20 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		98374D31274AC65800DDEB20 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		98374D32274AC65E00DDEB20 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				98374D04274AC63200DDEB20 /* ViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		98374D33274AC67D00DDEB20 /* Supporting files */ = {
+			isa = PBXGroup;
+			children = (
+				98374D00274AC63200DDEB20 /* AppDelegate.swift */,
+				98374D02274AC63200DDEB20 /* SceneDelegate.swift */,
+				98374D06274AC63200DDEB20 /* Main.storyboard */,
+				98374D09274AC63400DDEB20 /* Assets.xcassets */,
+				98374D0B274AC63400DDEB20 /* LaunchScreen.storyboard */,
+				98374D0E274AC63400DDEB20 /* Info.plist */,
+			);
+			name = "Supporting files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
