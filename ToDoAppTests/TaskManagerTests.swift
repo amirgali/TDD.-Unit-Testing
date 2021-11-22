@@ -48,4 +48,38 @@ class TaskManagerTests: XCTestCase {
         
         XCTAssertEqual(task.title, returnedTask.title)
     }
+    
+    // Проверка, что после выполнения задачи меняются кол-во задач которые нужно выполнить (tasksCount) и уже выполненно (doneTasksCount)
+    func testCheckTaskAtIndexChangesCounts() {
+        let task = Task(title: "Foo")
+        sut.add(task: task)
+        
+        sut.checkTask(at: 0)
+        
+        XCTAssertEqual(sut.tasksCount, 0)
+        XCTAssertEqual(sut.doneTasksCount, 1)
+    }
+    
+    // Проверка, когда отмечаем как done таск - он действительно удаляется из массива tasks
+    func testCheckedTaskRemovedFromTasks() {
+        let firstTask = Task(title: "Foo")
+        let secondTask = Task(title: "Bar")
+        sut.add(task: firstTask)
+        sut.add(task: secondTask)
+        
+        sut.checkTask(at: 0)
+        
+        XCTAssertEqual(sut.task(at: 0).title, "Bar")
+    }
+    
+    // Задача, которая выполненна попадает в массив с выполненными задачами
+    func testDoneTaskAtReturnCheckedTask() {
+        let task = Task(title: "Foo")
+        sut.add(task: task)
+        
+        sut.checkTask(at: 0)
+        let returnedTask = sut.doneTask(at: 0)
+        
+        XCTAssertEqual(returnedTask.title, task.title)
+    }
 }
