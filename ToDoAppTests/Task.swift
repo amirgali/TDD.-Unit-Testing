@@ -8,14 +8,18 @@
 import Foundation
 
 struct Task {
-    var title: String
-    var description: String?
+    let title: String
+    let description: String?
     // не хотим устанавливать, но чтобы была
     private(set) var date: Date?
+    let location: Location?
     
-    init(title: String, description: String? = nil) {
+    init(title: String,
+         description: String? = nil,
+         location: Location? = nil) {
         self.title = title
         self.description = description
         self.date = Date()
+        self.location = location
     }
 }
