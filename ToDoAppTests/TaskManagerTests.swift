@@ -69,7 +69,7 @@ class TaskManagerTests: XCTestCase {
         
         sut.checkTask(at: 0)
         
-        XCTAssertEqual(sut.task(at: 0).title, "Bar")
+        XCTAssertEqual(sut.task(at: 0), secondTask)
     }
     
     // Задача, которая выполненна попадает в массив с выполненными задачами
@@ -80,6 +80,27 @@ class TaskManagerTests: XCTestCase {
         sut.checkTask(at: 0)
         let returnedTask = sut.doneTask(at: 0)
         
-        XCTAssertEqual(returnedTask.title, task.title)
+        XCTAssertEqual(returnedTask, task)
+    }
+    
+    // Метод, который удалит все объекты из 2-х массивов
+    func testRemoveAllResultsCountsBeZero() {
+        sut.add(task: Task(title: "Foo"))
+        sut.add(task: Task(title: "Bar"))
+        // Передаем 1 элеменет во 2-ой массив
+        sut.checkTask(at: 0)
+        
+        sut.removeAll()
+        
+        XCTAssertTrue(sut.tasksCount == 0)
+        XCTAssertTrue(sut.doneTasksCount == 0)
+    }
+    
+    // Проверка на уникальные значения. Сначала добавим 2 таска и убедимся, что элемент не добавился дважды
+    func testAddingSameObjectDoesNotIncrementCount() {
+        sut.add(task: Task(title: "Foo"))
+        sut.add(task: Task(title: "Foo"))
+
+        XCTAssertTrue(sut.tasksCount == 1)
     }
 }
