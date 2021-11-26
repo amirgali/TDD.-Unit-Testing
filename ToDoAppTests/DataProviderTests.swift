@@ -22,7 +22,7 @@ class DataProviderTests: XCTestCase {
         controller = storyboard.instantiateViewController(withIdentifier: String(describing: TaskListViewController.self)) as? TaskListViewController
         
         controller.loadViewIfNeeded()
-
+        
         tableView = controller.tableView
         tableView.dataSource = sut
     }
@@ -62,30 +62,43 @@ class DataProviderTests: XCTestCase {
     }
     
     // Проверяем, какую ячейку получаем в cellForRowAt от indexPath
-//    func testCellForRowAtIndexPathReturnTasksCell() {
-//        sut.taskManager?.add(task: Task(title: "Foo"))
-//        tableView.reloadData()
-//        
-//        let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0))
-//        
-//        XCTAssertTrue(cell is TaskCell)
-//    }
+    //    func testCellForRowAtIndexPathReturnTasksCell() {
+    //        sut.taskManager?.add(task: Task(title: "Foo"))
+    //        tableView.reloadData()
+    //
+    //        let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0))
+    //
+    //        XCTAssertTrue(cell is TaskCell)
+    //    }
     
     // Подготовка к тесту была ниже в MockTableView
     // Наш метод переиспользует ячейку от TableView
-//    func testCellForRowAtIndexPathDequeuesCellFromTableView() {
-//        let mockTableView = MockTableView()
-//        mockTableView.dataSource = sut
-//        mockTableView.register(TaskCell.self, forCellReuseIdentifier: String(describing: TaskCell.self))
-//
-//        // Добавляем объект в mockTabbleView
-//        sut.taskManager?.add(task: Task(title: "Foo"))
-//        mockTableView.reloadData()
-//
-//        _ = mockTableView.cellForRow(at: IndexPath(row: 0, section: 0))
-//
-//        XCTAssertTrue(mockTableView.cellIsDequeued)
-//    }
+    //    func testCellForRowAtIndexPathDequeuesCellFromTableView() {
+    //        let mockTableView = MockTableView()
+    //        mockTableView.dataSource = sut
+    //        mockTableView.register(TaskCell.self, forCellReuseIdentifier: String(describing: TaskCell.self))
+    //
+    //        // Добавляем объект в mockTabbleView
+    //        sut.taskManager?.add(task: Task(title: "Foo"))
+    //        mockTableView.reloadData()
+    //
+    //        _ = mockTableView.cellForRow(at: IndexPath(row: 0, section: 0))
+    //
+    //        XCTAssertTrue(mockTableView.cellIsDequeued)
+    //    }
+    
+    // Проверяем, срабатывает ли метод Конфигур в первой секции
+    func testCellForRowInSectionZeroCallsConfigure() {
+        tableView.register(MockTaskCell.self, forCellReuseIdentifier: String(describing: TaskCell.self))
+        
+        let task = Task(title: "Foo")
+        sut.taskManager?.add(task: Task(title: "Foo"))
+        tableView.reloadData()
+        
+        let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! MockTaskCell
+        
+        XCTAssertEqual(cell.task, task)
+    }
 }
 
 
@@ -98,6 +111,14 @@ extension DataProviderTests {
             cellIsDequeued = true
             
             return super.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
+        }
+    }
+    
+    class MockTaskCell: TaskCell {
+        var task: Task?
+        
+       override func configure(withTask task: Task) {
+            self.task = task
         }
     }
 }
