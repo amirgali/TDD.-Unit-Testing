@@ -12,15 +12,22 @@ class DataProviderTests: XCTestCase {
     var sut: DataProvider!
     var tableView: UITableView!
     
-    override func setUpWithError() throws {
+    var controller: TaskListViewController!
+    
+    override func setUp() {
         sut = DataProvider()
         sut.taskManager = TaskManager()
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        controller = storyboard.instantiateViewController(withIdentifier: String(describing: TaskListViewController.self)) as? TaskListViewController
+        
+        controller.loadViewIfNeeded()
 
-        tableView = UITableView()
+        tableView = controller.tableView
         tableView.dataSource = sut
     }
     
-    override func tearDownWithError() throws {
+    override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
     
@@ -55,12 +62,42 @@ class DataProviderTests: XCTestCase {
     }
     
     // Проверяем, какую ячейку получаем в cellForRowAt от indexPath
-    func testCellForRowAtIndexPathReturnTasksCell() {
-        sut.taskManager?.add(task: Task(title: "Foo"))
-        tableView.reloadData()
-        
-        let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0))
-        
-        XCTAssertTrue(cell is TaskCell)
+//    func testCellForRowAtIndexPathReturnTasksCell() {
+//        sut.taskManager?.add(task: Task(title: "Foo"))
+//        tableView.reloadData()
+//        
+//        let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0))
+//        
+//        XCTAssertTrue(cell is TaskCell)
+//    }
+    
+    // Подготовка к тесту была ниже в MockTableView
+    // Наш метод переиспользует ячейку от TableView
+//    func testCellForRowAtIndexPathDequeuesCellFromTableView() {
+//        let mockTableView = MockTableView()
+//        mockTableView.dataSource = sut
+//        mockTableView.register(TaskCell.self, forCellReuseIdentifier: String(describing: TaskCell.self))
+//
+//        // Добавляем объект в mockTabbleView
+//        sut.taskManager?.add(task: Task(title: "Foo"))
+//        mockTableView.reloadData()
+//
+//        _ = mockTableView.cellForRow(at: IndexPath(row: 0, section: 0))
+//
+//        XCTAssertTrue(mockTableView.cellIsDequeued)
+//    }
+}
+
+
+// Добавим двойника TableView и добавим свойство, которое будет говорить переиспользовали мы ячейку или нет
+extension DataProviderTests {
+    class MockTableView: UITableView {
+        var cellIsDequeued = false
+        // Проверим, переиспользуется ли ячейка
+        override func dequeueReusableCell(withIdentifier identifier: String, for indexPath: IndexPath) -> UITableViewCell {
+            cellIsDequeued = true
+            
+            return super.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
+        }
     }
 }
